@@ -17,7 +17,8 @@ class Serialization
     public static $volatile = 'O:25:"danog\PlaceHolderVolatile":';
     public static $threaded = 'O:25:"danog\PlaceHolderThreaded":';
 
-    public static function unserialize($data) {
+    public static function unserialize($data)
+    {
         foreach (get_declared_classes() as $class) {
             if (($volatile = is_subclass_of($class, 'danog\SerializableVolatile')) || is_subclass_of($class, 'danog\SerializableThreaded')) {
                 $namelength = strlen($class);
@@ -31,9 +32,12 @@ class Serialization
                 $data = $stringdata;
             }
         }
+
         return \danog\Serialization::extractponyobject(unserialize($data));
     }
-    public static function extractponyobject($orig) {
+
+    public static function extractponyobject($orig)
+    {
         if (isset($orig->realactualponyobject)) {
             return \danog\Serialization::extractponyobject($orig->realactualponyobject);
         }
@@ -41,6 +45,7 @@ class Serialization
             foreach ($orig as $key => $value) {
                 $orig[$key] = \danog\Serialization::extractponyobject($value);
             }
+
             return $orig;
         }
         if (is_object($orig)) {
@@ -48,9 +53,12 @@ class Serialization
                 $orig->{$key} = \danog\Serialization::extractponyobject($value);
             }
         }
+
         return $orig;
     }
-    public static function serialize($object) {
+
+    public static function serialize($object)
+    {
         $object = serialize(self::createserializableobject($object));
         foreach (['danog\PlaceHolderVolatile', 'danog\PlaceHolderThreaded'] as $class) {
             $object = explode('O:'.strlen($class).':"'.$class.'":', $object);
@@ -61,21 +69,29 @@ class Serialization
                 list($pre, $value) = explode('s:21:"originalclassnamepony";s:', $value, 2);
                 list($length, $value) = explode(':', $value, 2);
                 $classname = substr($value, 1, $length);
-                $value = $pre.substr($value, $length+3);
+                $value = $pre.substr($value, $length + 3);
                 $newobject .= 'O:'.strlen($classname).':"'.$classname.'":'.$attributecount.':{'.$value;
             }
             $object = $newobject;
         }
+
         return $object;
     }
-    public static function createserializableobject($orig) {
-        if (is_object($orig) && method_exists($orig, 'fetchserializableobject')) return $orig->fetchserializableobject();
-        if ($orig instanceof \Volatile) $orig = self::createserializableobject((array)$orig);
+
+    public static function createserializableobject($orig)
+    {
+        if (is_object($orig) && method_exists($orig, 'fetchserializableobject')) {
+            return $orig->fetchserializableobject();
+        }
+        if ($orig instanceof \Volatile) {
+            $orig = self::createserializableobject((array) $orig);
+        }
         if (is_array($orig) || $orig instanceof \Volatile) {
             foreach ($orig as $key => $value) {
                 $orig[$key] = self::createserializableobject($value);
             }
         }
+
         return $orig;
     }
 }

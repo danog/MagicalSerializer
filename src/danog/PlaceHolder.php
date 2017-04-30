@@ -14,14 +14,19 @@ namespace danog;
 
 trait PlaceHolder
 {
-    public function __construct($originalclassnamepony, $elements) {
+    public function __construct($originalclassnamepony, $elements)
+    {
         $this->originalclassnamepony = $originalclassnamepony;
         foreach ($elements as $key => $value) {
             $this->{$key} = Serialization::createserializableobject($value);
         }
     }
-    public function __wakeup() {
-        $this->realactualponyobject = new $this->originalclassnamepony((array)$this);
-        if (method_exists($this->realactualponyobject, '__wakeup')) $this->realactualponyobject->__wakeup();
+
+    public function __wakeup()
+    {
+        $this->realactualponyobject = new $this->originalclassnamepony((array) $this);
+        if (method_exists($this->realactualponyobject, '__wakeup')) {
+            $this->realactualponyobject->__wakeup();
+        }
     }
 }

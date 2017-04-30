@@ -14,18 +14,25 @@ namespace danog;
 
 trait Serializable
 {
-    public function __construct(...$params) {
+    public function __construct(...$params)
+    {
         if (count($params) === 1 && is_array($params[0]) && isset($params[0]['originalclassnamepony'])) {
             unset($params[0]['originalclassnamepony']);
             foreach ($params[0] as $key => $value) {
                 $this->{$key} = \danog\Serialization::extractponyobject($value);
             }
+
             return;
         }
-        if (method_exists($this, '___construct')) $this->___construct(...$params);
+        if (method_exists($this, '___construct')) {
+            $this->___construct(...$params);
+        }
     }
-    public function fetchserializableobject() {
+
+    public function fetchserializableobject()
+    {
         $name = '\danog\PlaceHolder'.get_parent_class(get_parent_class($this));
-        return new $name(get_class($this), (array)$this);
+
+        return new $name(get_class($this), (array) $this);
     }
 }
