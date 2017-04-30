@@ -6,7 +6,11 @@ This library allows you to serialize classes that extend pthreads's Volatile or 
 
 It also provides reverse and forward compatibility between old serializations, where your objects do not yet extend Threaded/Volatile, and new serializations, where they do extend them.
 
+Install it using composer, the package bame is `danog/serializablevolatile`.
+
+
 Usage of this library is extremely simple, here are a few examples (see a.php and b.php for more):
+
 
 ```
 <?php
@@ -25,7 +29,7 @@ $a = new a;
 file_put_contents('test', serialize($a));
 ```
 
-As you can see, here `a` does not extend any class, and we are serializing an instance of it tothe file `test`.
+As you can see, here `a` does not extend any class, and we are serializing an instance of it to the file `test`.
 This example also prints `Constructed!`, since the constructor function, __construct, is called.
 
 ```
@@ -50,7 +54,7 @@ $othera = new a;
 This will deserialize correctly the contents of `test`, recreating the instance of `a`, with the only difference that now it will be thread safe.  
 Of course, the wakeup function will be called, so `pony` will be printed.  
 You may have noticed that the construct function is now called `___construct` instead of `__construct`: this is a required change, or else this library will not work.  
-Of course, when a will be instantiated, the new constructor function will be called anyway (and you'll see the message `Constructed!` pop up).  
+Of course, when `a` will be instantiated, the new constructor function will be called anyway (and you'll see the message `Constructed!` pop up).  
 
 If you try to serialize either `$a` or `$othera` and deserialize it from the first script (where `a` does not extend any other class), you will find that it will be deserialized correctly.
 
