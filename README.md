@@ -4,7 +4,7 @@ Licensed under AGLPV3, created by Daniil Gentili (https://daniil.it).
 
 This library allows you to serialize classes that extend pthreads's Volatile or Threaded classes (support for other internal classes can be easily added).  
 
-It also allows provides reverse and forward compatibility between old serializations, where your objects do not yet extend Threaded/Volatile, and new serializations, where they do extend them.
+It also provides reverse and forward compatibility between old serializations, where your objects do not yet extend Threaded/Volatile, and new serializations, where they do extend them.
 
 Usage of this library is extremely simple, here are a few examples (see a.php and b.php for more):
 
