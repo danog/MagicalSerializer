@@ -31,7 +31,7 @@ trait Serializable
 
     public function fetchserializableobject()
     {
-        $values = (array)$this;
+        $values = (array) $this;
         if (method_exists($this, '__sleep')) {
             $newvalues = [];
             foreach ($this->__sleep() as $key) {
@@ -39,6 +39,7 @@ trait Serializable
             }
             $values = $newvalues;
         }
+
         return new \danog\PlaceHolder(get_class($this), $values);
     }
 }

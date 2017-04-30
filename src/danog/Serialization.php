@@ -24,7 +24,7 @@ class Serialization
                 foreach ($data as $chunk) {
                     list($attributecount, $value) = explode(':{', $chunk, 2);
                     $attributecount++;
-                    $stringdata .=  'O:17:"danog\PlaceHolder":'.$attributecount.':{s:21:"originalclassnamepony";s:'.$namelength.':"'.$class.'";'.$value;
+                    $stringdata .= 'O:17:"danog\PlaceHolder":'.$attributecount.':{s:21:"originalclassnamepony";s:'.$namelength.':"'.$class.'";'.$value;
                 }
                 $data = $stringdata;
             }
@@ -67,7 +67,6 @@ class Serialization
             $value = $pre.substr($value, $length + 3);
             $newobject .= 'O:'.strlen($classname).':"'.$classname.'":'.$attributecount.':{'.$value;
         }
-        
 
         return $newobject;
     }

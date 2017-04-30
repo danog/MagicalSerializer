@@ -4,6 +4,7 @@ require 'vendor/autoload.php';
 class a extends \Volatile
 {
     use \danog\Serializable;
+
     public function ___construct()
     {
         var_dump('CONSTRUCTED a');
