@@ -14,20 +14,17 @@ namespace danog;
 
 class Serialization
 {
-    public static $volatile = 'O:25:"danog\PlaceHolderVolatile":';
-    public static $threaded = 'O:25:"danog\PlaceHolderThreaded":';
-
     public static function unserialize($data)
     {
         foreach (get_declared_classes() as $class) {
-            if (($volatile = is_subclass_of($class, 'danog\SerializableVolatile')) || is_subclass_of($class, 'danog\SerializableThreaded')) {
+            if (isset(class_uses($class)['danog\Serializable'])) {
                 $namelength = strlen($class);
                 $data = explode('O:'.$namelength.':"'.$class.'":', $data);
                 $stringdata = array_shift($data);
                 foreach ($data as $chunk) {
                     list($attributecount, $value) = explode(':{', $chunk, 2);
                     $attributecount++;
-                    $stringdata .= ($volatile ? self::$volatile : self::$threaded).$attributecount.':{s:21:"originalclassnamepony";s:'.$namelength.':"'.$class.'";'.$value;
+                    $stringdata .=  'O:17:"danog\PlaceHolder":'.$attributecount.':{s:21:"originalclassnamepony";s:'.$namelength.':"'.$class.'";'.$value;
                 }
                 $data = $stringdata;
             }
@@ -59,23 +56,20 @@ class Serialization
 
     public static function serialize($object)
     {
-        $object = serialize(self::createserializableobject($object));
-        foreach (['danog\PlaceHolderVolatile', 'danog\PlaceHolderThreaded'] as $class) {
-            $object = explode('O:'.strlen($class).':"'.$class.'":', $object);
-            $newobject = array_shift($object);
-            foreach ($object as $chunk) {
-                list($attributecount, $value) = explode(':{', $chunk, 2);
-                $attributecount--;
-                list($pre, $value) = explode('s:21:"originalclassnamepony";s:', $value, 2);
-                list($length, $value) = explode(':', $value, 2);
-                $classname = substr($value, 1, $length);
-                $value = $pre.substr($value, $length + 3);
-                $newobject .= 'O:'.strlen($classname).':"'.$classname.'":'.$attributecount.':{'.$value;
-            }
-            $object = $newobject;
+        $object = explode('O:17:"danog\PlaceHolder":', serialize(self::createserializableobject($object)));
+        $newobject = array_shift($object);
+        foreach ($object as $chunk) {
+            list($attributecount, $value) = explode(':{', $chunk, 2);
+            $attributecount--;
+            list($pre, $value) = explode('s:21:"originalclassnamepony";s:', $value, 2);
+            list($length, $value) = explode(':', $value, 2);
+            $classname = substr($value, 1, $length);
+            $value = $pre.substr($value, $length + 3);
+            $newobject .= 'O:'.strlen($classname).':"'.$classname.'":'.$attributecount.':{'.$value;
         }
+        
 
-        return $object;
+        return $newobject;
     }
 
     public static function createserializableobject($orig)

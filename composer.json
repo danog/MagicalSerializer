@@ -1,9 +1,9 @@
 {
-    "name": "danog/serializablevolatile",
-    "description": "Serialize Volatile or Threaded classes!",
+    "name": "danog/magicalserializer",
+    "description": "Serialize Volatile, Threaded or any other internal PHP class!",
     "type": "library",
     "license": "AGPLV3",
-    "homepage": "https://daniil.it/SerializableVolatile",
+    "homepage": "https://daniil.it/MagicalSerializer",
     "keywords": ["pthreads", "volatile", "serialize", "threading", "serializable"],
     "authors": [
         {

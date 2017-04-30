@@ -31,8 +31,14 @@ trait Serializable
 
     public function fetchserializableobject()
     {
-        $name = '\danog\PlaceHolder'.get_parent_class(get_parent_class($this));
-
-        return new $name(get_class($this), (array) $this);
+        $values = (array)$this;
+        if (method_exists($this, '__sleep')) {
+            $newvalues = [];
+            foreach ($this->__sleep() as $key) {
+                $newvalues[$key] = $values[$key];
+            }
+            $values = $newvalues;
+        }
+        return new \danog\PlaceHolder(get_class($this), $values);
     }
 }

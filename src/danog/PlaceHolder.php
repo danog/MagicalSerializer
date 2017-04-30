@@ -12,7 +12,7 @@ If not, see <http://www.gnu.org/licenses/>.
 
 namespace danog;
 
-trait PlaceHolder
+class PlaceHolder
 {
     public function __construct($originalclassnamepony, $elements)
     {

@@ -1,8 +1,9 @@
 <?php
 
 require 'vendor/autoload.php';
-class a extends \danog\SerializableVolatile
+class a extends \Volatile
 {
+    use \danog\Serializable;
     public function ___construct()
     {
         var_dump('CONSTRUCTED a');
@@ -14,8 +15,9 @@ class a extends \danog\SerializableVolatile
     }
 }
 new a();
-class b extends \danog\SerializableVolatile
+class b extends Volatile
 {
+    use \danog\Serializable;
 }
 $result = \danog\Serialization::unserialize(file_get_contents('test'));
 var_dump($result);
