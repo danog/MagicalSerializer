@@ -1,0 +1,19 @@
+{
+    "name": "danog/serializablevolatile",
+    "description": "Serialize Volatile or Threaded classes!",
+    "type": "library",
+    "license": "AGPLV3",
+    "homepage": "https://daniil.it/SerializableVolatile",
+    "keywords": ["pthreads", "volatile", "serialize", "threading", "serializable"],
+    "authors": [
+        {
+            "name": "Daniil Gentili",
+            "email": "daniil@daniil.it"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "danog\\": "src/"
+        }
+    }
+}
