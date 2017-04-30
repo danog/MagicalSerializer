@@ -6,7 +6,7 @@ This library allows you to serialize classes that extend pthreads's Volatile or 
 
 It also provides reverse and forward compatibility between old serializations, where your objects do not yet extend Threaded/Volatile, and new serializations, where they do extend them.
 
-Install it using composer, the package bame is `danog/serializablevolatile`.
+Install it using composer, the package name is `danog/serializablevolatile`.
 
 
 Usage of this library is extremely simple, here are a few examples (see a.php and b.php for more):
