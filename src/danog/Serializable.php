@@ -31,7 +31,7 @@ trait Serializable
 
     public function fetchserializableobject()
     {
-        $values = (array) $this;
+        $values = get_object_vars($this);
         if (method_exists($this, '__sleep')) {
             $newvalues = [];
             foreach ($this->__sleep() as $key) {

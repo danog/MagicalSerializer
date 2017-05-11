@@ -1,10 +1,10 @@
 <?php
 
 require 'vendor/autoload.php';
-class a extends \Volatile
+class a
 {
     use \danog\Serializable;
-
+    protected $a;
     public function ___construct()
     {
         var_dump('CONSTRUCTED a');
@@ -16,7 +16,7 @@ class a extends \Volatile
     }
 }
 new a();
-class b extends Volatile
+class b
 {
     use \danog\Serializable;
 }
