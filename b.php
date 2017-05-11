@@ -5,6 +5,7 @@ class a
 {
     use \danog\Serializable;
     protected $a;
+
     public function ___construct()
     {
         var_dump('CONSTRUCTED a');
