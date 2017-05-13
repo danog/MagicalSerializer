@@ -77,7 +77,7 @@ class Serialization
             return $orig->fetchserializableobject();
         }
         if ($orig instanceof \Volatile) {
-            $orig = self::createserializableobject((array) $orig);
+            $orig = self::createserializableobject(get_object_vars($orig));
         }
         if (is_array($orig) || $orig instanceof \Volatile) {
             foreach ($orig as $key => $value) {

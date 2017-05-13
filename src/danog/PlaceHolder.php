@@ -24,7 +24,7 @@ class PlaceHolder
 
     public function __wakeup()
     {
-        $this->realactualponyobject = new $this->originalclassnamepony((array) $this);
+        $this->realactualponyobject = new $this->originalclassnamepony(get_object_vars($this));
         if (method_exists($this->realactualponyobject, '__wakeup')) {
             $this->realactualponyobject->__wakeup();
         }
