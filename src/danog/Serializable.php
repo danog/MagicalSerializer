@@ -21,9 +21,9 @@ trait Serializable
             foreach ($params[0] as $key => $value) {
                 if (strpos($key, chr(0).get_class($this).chr(0)) === 0) {
                     $key = substr($key, strlen(get_class($this)) + 2);
-                } else if (strpos($key, chr(0).'*'.chr(0)) === 0) {
+                } elseif (strpos($key, chr(0).'*'.chr(0)) === 0) {
                     $key = substr($key, 3);
-                } else if (strpos($key, chr(0)) === 0) {
+                } elseif (strpos($key, chr(0)) === 0) {
                     $key = substr($key, 1);
                 }
                 $this->{$key} = \danog\Serialization::extractponyobject($value);
