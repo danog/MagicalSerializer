@@ -17,7 +17,7 @@ class Serialization
     public static function unserialize($data)
     {
         foreach (get_declared_classes() as $class) {
-            if (isset(class_uses($class)['danog\Serializable']) || $class === 'Volatile') {
+            if (isset(class_uses($class)['danog\Serializable'])) {
                 $namelength = strlen($class);
                 $data = explode('O:'.$namelength.':"'.$class.'":', $data);
                 $stringdata = array_shift($data);
