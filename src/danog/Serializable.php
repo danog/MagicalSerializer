@@ -23,7 +23,7 @@ trait Serializable
                     $key = substr($key, strlen(get_class($this)) + 2);
                 } elseif (strpos($key, chr(0).'*'.chr(0)) === 0) {
                     $key = substr($key, 3);
-                } elseif (strpos($key, chr(0)) === 0) {
+                } elseif ($key[0] === "\0") {
                     $key = substr($key, 1);
                 }
                 $this->{$key} = \danog\Serialization::extractponyobject($value);
