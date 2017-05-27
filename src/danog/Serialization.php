@@ -15,12 +15,15 @@ namespace danog;
 class Serialization
 {
     private static $extracted = [];
+
     public static function unserialize($data)
     {
         foreach (get_declared_classes() as $class) {
             if (isset(class_uses($class)['danog\Serializable'])) {
                 $namelength = strlen($class);
-                if (strpos($data, 'O:'.$namelength.':"'.$class.'":') === false) continue;
+                if (strpos($data, 'O:'.$namelength.':"'.$class.'":') === false) {
+                    continue;
+                }
                 $data = explode('O:'.$namelength.':"'.$class.'":', $data);
                 $stringdata = array_shift($data);
                 foreach ($data as $chunk) {
@@ -34,6 +37,7 @@ class Serialization
         self::$extracted = [];
         $data = self::extractponyobject(unserialize($data));
         self::$extracted = [];
+
         return $data;
     }
 
@@ -62,7 +66,9 @@ class Serialization
     public static function serialize($object, $not_compatible = false)
     {
         $object = serialize(self::createserializableobject($object));
-        if ($not_compatible === true) return $object;
+        if ($not_compatible === true) {
+            return $object;
+        }
         $object = explode('O:17:"danog\PlaceHolder":', $object);
         $newobject = array_shift($object);
         foreach ($object as $chunk) {
