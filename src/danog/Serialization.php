@@ -14,11 +14,13 @@ namespace danog;
 
 class Serialization
 {
+    private static $extracted = [];
     public static function unserialize($data)
     {
         foreach (get_declared_classes() as $class) {
             if (isset(class_uses($class)['danog\Serializable']) || $class === 'Volatile') {
                 $namelength = strlen($class);
+                if (strpos($data, 'O:'.$namelength.':"'.$class.'":') === false) continue;
                 $data = explode('O:'.$namelength.':"'.$class.'":', $data);
                 $stringdata = array_shift($data);
                 foreach ($data as $chunk) {
@@ -29,34 +31,39 @@ class Serialization
                 $data = $stringdata;
             }
         }
-
-        return \danog\Serialization::extractponyobject(unserialize($data));
+        self::$extracted = [];
+        $data = self::extractponyobject(unserialize($data));
+        self::$extracted = [];
+        return $data;
     }
 
     public static function extractponyobject($orig)
     {
         if (isset($orig->realactualponyobject)) {
-            return \danog\Serialization::extractponyobject($orig->realactualponyobject);
+            return self::extractponyobject($orig->realactualponyobject);
         }
         if (is_array($orig) || $orig instanceof \Volatile) {
             foreach ($orig as $key => $value) {
-                $orig[$key] = \danog\Serialization::extractponyobject($value);
+                $orig[$key] = self::extractponyobject($value);
             }
 
             return $orig;
         }
-        if (is_object($orig)) {
+        if (is_object($orig) && !isset(self::$extracted[$hash = spl_object_hash($orig)])) {
+            self::$extracted[$hash] = true;
             foreach ($orig as $key => $value) {
-                $orig->{$key} = \danog\Serialization::extractponyobject($value);
+                $orig->{$key} = self::extractponyobject($value);
             }
         }
 
         return $orig;
     }
 
-    public static function serialize($object)
+    public static function serialize($object, $not_compatible = false)
     {
-        $object = explode('O:17:"danog\PlaceHolder":', serialize(self::createserializableobject($object)));
+        $object = serialize(self::createserializableobject($object));
+        if ($not_compatible === true) return $object;
+        $object = explode('O:17:"danog\PlaceHolder":', $object);
         $newobject = array_shift($object);
         foreach ($object as $chunk) {
             list($attributecount, $value) = explode(':{', $chunk, 2);
