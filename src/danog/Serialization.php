@@ -65,7 +65,9 @@ class Serialization
 
     public static function serialize($object, $not_compatible = false)
     {
+        self::$extracted = [];
         $object = serialize(self::createserializableobject($object));
+        self::$extracted = [];
         if ($not_compatible === true) {
             return $object;
         }
@@ -84,20 +86,24 @@ class Serialization
         return $newobject;
     }
 
-    public static function createserializableobject($orig)
+    public static function createserializableobject(&$orig)
     {
-        if (is_object($orig) && method_exists($orig, 'fetchserializableobject')) {
-            return $orig->fetchserializableobject();
-        }
-        if ($orig instanceof \Volatile) {
-            $orig = self::createserializableobject(get_object_vars($orig));
-        }
-        if (is_array($orig) || $orig instanceof \Volatile) {
-            foreach ($orig as $key => $value) {
-                $orig[$key] = self::createserializableobject($value);
+        if (is_object($orig)) {
+            if (isset(self::$extracted[$hash = spl_object_hash($orig)])) return false;
+            self::$extracted[$hash] = true;
+            if (method_exists($orig, 'fetchserializableobject')) {
+                $orig = $orig->fetchserializableobject();
+                return true;
             }
         }
-
-        return $orig;
+        /*
+        if ($orig instanceof \Volatile) {
+            $orig = self::createserializableobject(get_object_vars($orig));
+        }*/
+        if (is_array($orig) || $orig instanceof \Volatile) {
+            foreach ($orig as &$value) {
+                self::createserializableobject($value);
+            }
+        }
     }
 }
