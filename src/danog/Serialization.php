@@ -86,14 +86,13 @@ class Serialization
         return $newobject;
     }
 
-    public static function createserializableobject(&$orig)
+    public static function createserializableobject($orig)
     {
         if (is_object($orig)) {
             if (isset(self::$extracted[$hash = spl_object_hash($orig)])) return false;
             self::$extracted[$hash] = true;
             if (method_exists($orig, 'fetchserializableobject')) {
-                $orig = $orig->fetchserializableobject();
-                return true;
+                return $orig->fetchserializableobject();
             }
         }
         /*
@@ -101,9 +100,10 @@ class Serialization
             $orig = self::createserializableobject(get_object_vars($orig));
         }*/
         if (is_array($orig) || $orig instanceof \Volatile) {
-            foreach ($orig as &$value) {
-                self::createserializableobject($value);
+            foreach ($orig as $key => $value) {
+                $orig[$key] = self::createserializableobject($value);
             }
         }
+        return $orig;
     }
 }
