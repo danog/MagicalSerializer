@@ -89,10 +89,13 @@ class Serialization
     public static function createserializableobject(&$orig)
     {
         if (is_object($orig)) {
-            if (isset(self::$extracted[$hash = spl_object_hash($orig)])) return false;
+            if (isset(self::$extracted[$hash = spl_object_hash($orig)])) {
+                return false;
+            }
             self::$extracted[$hash] = true;
             if (method_exists($orig, 'fetchserializableobject')) {
                 $orig = $orig->fetchserializableobject();
+
                 return true;
             }
         }
