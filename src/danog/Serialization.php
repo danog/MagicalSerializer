@@ -106,6 +106,7 @@ class Serialization
                 $orig[$key] = self::createserializableobject($value);
             }
         }
+
         return $orig;
     }
 }
