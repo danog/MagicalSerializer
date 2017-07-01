@@ -14,7 +14,7 @@ namespace danog;
 
 trait Serializable
 {
-    public function __construct(...$params)
+    final public function __construct(...$params)
     {
         if (count($params) === 1 && is_array($params[0]) && isset($params[0]['originalclassnamepony'])) {
             unset($params[0]['originalclassnamepony']);
@@ -36,7 +36,7 @@ trait Serializable
         }
     }
 
-    public function fetchserializableobject()
+    final public function fetchserializableobject()
     {
         $values = get_object_vars($this);
         if (method_exists($this, '__sleep')) {
