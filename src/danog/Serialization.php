@@ -96,12 +96,15 @@ class Serialization
                 return $orig->fetchserializableobject($hash);
             }
         }
-        if (isset($hash)) self::$extracted[$hash] = &$orig;
+        if (isset($hash)) {
+            self::$extracted[$hash] = &$orig;
+        }
         if (is_array($orig) || $orig instanceof \Volatile) {
             foreach ($orig as $key => $value) {
                 $orig[$key] = self::createserializableobject($value);
             }
         }
+
         return $orig;
     }
 }

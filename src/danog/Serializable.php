@@ -46,6 +46,7 @@ trait Serializable
             }
             $values = $newvalues;
         }
+
         return new \danog\PlaceHolder($hash, get_class($this), $values);
     }
 }
