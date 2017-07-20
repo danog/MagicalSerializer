@@ -36,7 +36,7 @@ trait Serializable
         }
     }
 
-    final public function fetchserializableobject()
+    final public function fetchserializableobject($hash)
     {
         $values = get_object_vars($this);
         if (method_exists($this, '__sleep')) {
@@ -46,7 +46,6 @@ trait Serializable
             }
             $values = $newvalues;
         }
-
-        return new \danog\PlaceHolder(get_class($this), $values);
+        return new \danog\PlaceHolder($hash, get_class($this), $values);
     }
 }

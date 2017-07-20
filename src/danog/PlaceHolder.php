@@ -14,8 +14,9 @@ namespace danog;
 
 class PlaceHolder
 {
-    public function __construct($originalclassnamepony, $elements)
+    public function __construct($hash, $originalclassnamepony, $elements)
     {
+        Serialization::$extracted[$hash] = $this;
         $this->originalclassnamepony = $originalclassnamepony;
         foreach ($elements as $key => $value) {
             $this->{$key} = Serialization::createserializableobject($value);

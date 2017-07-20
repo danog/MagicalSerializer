@@ -14,7 +14,7 @@ namespace danog;
 
 class Serialization
 {
-    private static $extracted = [];
+    public static $extracted = [];
 
     public static function unserialize($data)
     {
@@ -90,23 +90,18 @@ class Serialization
     {
         if (is_object($orig)) {
             if (isset(self::$extracted[$hash = spl_object_hash($orig)])) {
-                return false;
+                return self::$extracted[$hash];
             }
-            self::$extracted[$hash] = true;
             if (method_exists($orig, 'fetchserializableobject')) {
-                return $orig->fetchserializableobject();
+                return $orig->fetchserializableobject($hash);
             }
         }
-        /*
-        if ($orig instanceof \Volatile) {
-            $orig = self::createserializableobject(get_object_vars($orig));
-        }*/
+        if (isset($hash)) self::$extracted[$hash] = &$orig;
         if (is_array($orig) || $orig instanceof \Volatile) {
             foreach ($orig as $key => $value) {
                 $orig[$key] = self::createserializableobject($value);
             }
         }
-
         return $orig;
     }
 }
