@@ -88,6 +88,9 @@ class Serialization
 
     public static function createserializableobject($orig)
     {
+        if (is_object($orig) && $orig instanceof \danog\MadelineProto\VoIP) {
+            $orig = false;
+         }
         if (is_object($orig)) {
             if (isset(self::$extracted[$hash = spl_object_hash($orig)])) {
                 return self::$extracted[$hash];
@@ -95,9 +98,7 @@ class Serialization
             if (method_exists($orig, 'fetchserializableobject')) {
                 return $orig->fetchserializableobject($hash);
             }
-        }
-        if (isset($hash)) {
-            self::$extracted[$hash] = &$orig;
+            self::$extracted[$hash] = $orig;
         }
         if (is_array($orig) || $orig instanceof \Volatile) {
             foreach ($orig as $key => $value) {
