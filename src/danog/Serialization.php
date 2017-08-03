@@ -90,7 +90,7 @@ class Serialization
     {
         if (is_object($orig) && $orig instanceof \danog\MadelineProto\VoIP) {
             $orig = false;
-         }
+        }
         if (is_object($orig)) {
             if (isset(self::$extracted[$hash = spl_object_hash($orig)])) {
                 return self::$extracted[$hash];
