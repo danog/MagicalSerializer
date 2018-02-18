@@ -31,7 +31,9 @@ trait Serializable
 
             return;
         }
-        if (method_exists($this, '___construct')) {
+        if (method_exists($this, '__magic_construct')) {
+            $this->__magic_construct(...$params);
+        } else if (method_exists($this, '___construct')) {
             $this->___construct(...$params);
         }
     }
