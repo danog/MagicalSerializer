@@ -30,7 +30,7 @@ file_put_contents('test', serialize($a));
 ```
 
 As you can see, here `a` does not extend any class, and we are serializing an instance of it to the file `test`.
-This example also prints `Constructed!`, since the constructor function, __construct, is called.
+This example also prints `Constructed!`, since the constructor function, `__magic_construct`, is called.
 
 ```
 <?php
